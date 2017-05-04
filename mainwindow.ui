@@ -55,7 +55,7 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="mailLayoutWidget">
        <layout class="QVBoxLayout" name="mailDirectoryLayout">
         <property name="spacing">
          <number>0</number>
@@ -78,7 +78,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <layout class="QVBoxLayout" name="rightContentLayout">
         <property name="spacing">
          <number>10</number>
@@ -195,7 +195,11 @@
            <enum>Qt::Vertical</enum>
           </property>
           <widget class="QListView" name="listView"/>
-          <widget class="QTextEdit" name="textEdit"/>
+          <widget class="QTextEdit" name="textEdit">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
          </widget>
         </item>
        </layout>

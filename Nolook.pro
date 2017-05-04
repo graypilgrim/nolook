@@ -24,8 +24,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    mail.cpp \
+    directory.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    mail.h \
+    directory.h
 
 FORMS    += mainwindow.ui
