@@ -52,3 +52,11 @@ QString Mail::getContent() {
 void Mail::setContent(const QString &content) {
     this->content = content;
 }
+
+QDateTime Mail::getSendTime() {
+    return sendTime;
+}
+
+void Mail::setSendTime(const QDateTime &time) {
+    sendTime = time;
+}

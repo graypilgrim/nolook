@@ -1,13 +1,13 @@
 #ifndef MAIL_H
 #define MAIL_H
 
-#include <QStandardItem>
 #include <QString>
+#include <QDateTime>
 
 #include <string>
 #include <vector>
 
-class Mail : public QStandardItem
+class Mail
 {
 public:
     Mail();
@@ -24,6 +24,8 @@ public:
     void setBlindCarbonCopy(const std::vector<QString> &bcc);
     QString getContent();
     void setContent(const QString &content);
+    QDateTime getSendTime();
+    void setSendTime(const QDateTime &time);
 
 private:
     QString sender;
@@ -32,7 +34,7 @@ private:
     std::vector<QString> carbonCopy;
     std::vector<QString> blindCarbonCopy;
     QString content;
-
+    QDateTime sendTime;
 };
 
 #endif // MAIL_H
