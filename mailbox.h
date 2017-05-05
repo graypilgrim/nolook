@@ -7,6 +7,15 @@
 
 #include <memory>
 
+enum class DirectoryName {
+    inbox,
+    archived,
+    sent,
+    drafts,
+    spam,
+    removed
+};
+
 class MailBox
 {
 public:

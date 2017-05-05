@@ -16,6 +16,7 @@ public:
     void addMail(const std::shared_ptr<Mail> &mail);
     void removeMail(const std::shared_ptr<Mail> &mail);
     std::shared_ptr<QStandardItemModel> getModel();
+    std::shared_ptr<Mail> getMail(int index);
 
 private:
     static int mailCounter;

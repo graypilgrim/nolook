@@ -7,6 +7,7 @@
 #include <QMainWindow>
 #include <QStandardItemModel>
 #include <QModelIndex>
+#include <QMenu>
 
 #include <memory>
 
@@ -24,10 +25,19 @@ public:
 
 public slots:
     void loadDirectory(const QModelIndex &index);
+    void loadMailContent(const QModelIndex &index);
 
 private:
+    void bindSignals();
+    void createActions();
+    void createMenus();
+    QString prepareMailContent(Mail *mail);
+
     std::unique_ptr<Ui::MainWindow> ui;
     std::unique_ptr<MailBox> mailBox;
+    std::shared_ptr<QMenu> moveMenu;
+
+    DirectoryName currentDirectory;
 };
 
 #endif // MAINWINDOW_H

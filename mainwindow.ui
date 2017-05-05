@@ -10,6 +10,9 @@
     <height>689</height>
    </rect>
   </property>
+  <property name="mouseTracking">
+   <bool>false</bool>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -67,7 +70,7 @@
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>40</width>
+            <width>0</width>
             <height>40</height>
            </size>
           </property>
@@ -203,7 +206,7 @@
             <set>QAbstractItemView::NoEditTriggers</set>
            </property>
           </widget>
-          <widget class="QTextEdit" name="textEdit">
+          <widget class="QTextEdit" name="mailContent">
            <property name="readOnly">
             <bool>true</bool>
            </property>

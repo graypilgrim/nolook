@@ -18,10 +18,30 @@ void MailBox::loadExampleData() {
         inbox->addMail(loadExampleMail());
     model->appendRow(inbox);
 
+    auto archived = new DirectoryItem("archived");
+    for (int i = 0; i < 8; ++i)
+        archived->addMail(loadExampleMail());
+    model->appendRow(archived);
+
+    auto sent = new DirectoryItem("sent");
+    for (int i = 0; i < 8; ++i)
+        sent->addMail(loadExampleMail());
+    model->appendRow(sent);
+
+    auto drafts = new DirectoryItem("drafts");
+    for (int i = 0; i < 8; ++i)
+        drafts->addMail(loadExampleMail());
+    model->appendRow(drafts);
+
     auto spam = new DirectoryItem("spam");
     for (int i = 0; i < 8; ++i)
         spam->addMail(loadExampleMail());
     model->appendRow(spam);
+
+    auto removed = new DirectoryItem("removed");
+    for (int i = 0; i < 8; ++i)
+        removed->addMail(loadExampleMail());
+    model->appendRow(removed);
 }
 
 std::shared_ptr<Mail> MailBox::loadExampleMail() {

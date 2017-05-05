@@ -13,7 +13,7 @@ void DirectoryItem::addMail(const std::shared_ptr<Mail> &mail) {
     auto date = mail->getSendTime().toString("hh:mm dd-MM-yyyy");
     list.append(new QStandardItem(date));
 
-    mails.append(mails);
+    mails.push_back(mail);
     model->appendRow(list);
 }
 
@@ -33,4 +33,8 @@ void DirectoryItem::removeMail(const std::shared_ptr<Mail> &mail) {
 
 std::shared_ptr<QStandardItemModel> DirectoryItem::getModel() {
     return model;
+}
+
+std::shared_ptr<Mail> DirectoryItem::getMail(int index) {
+    return mails[index];
 }
