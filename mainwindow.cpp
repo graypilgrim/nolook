@@ -2,46 +2,32 @@
 #include "ui_mainwindow.h"
 #include "directoryitem.h"
 
+#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow), model(new QStandardItemModel)
+    QMainWindow(parent)
 {
+    ui.reset(new Ui::MainWindow);
+    mailBox.reset(new MailBox);
+    mailBox->loadExampleData();
+
     ui->setupUi(this);
 
-    loadExampleData();
-    ui->mailDirectory->setModel(model);
+    ui->mailDirectory->setModel(mailBox->getModel().get());
+    auto dir = static_cast<DirectoryItem*>(mailBox->getModel()->item(0));
+    ui->directoryContent->setModel(dir->getModel().get());
+    QObject::connect(ui->mailDirectory, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(loadDirectory(QModelIndex)) );
 }
 
 MainWindow::~MainWindow()
 {
-    delete ui;
-    delete model;
 }
 
-int MainWindow::mailCounter = 0;
+void MainWindow::loadDirectory(const QModelIndex &index) {
+    auto i = index.row();
+    auto dir = static_cast<DirectoryItem*>(mailBox->getModel()->item(i));
+    ui->directoryContent->setModel(dir->getModel().get());
 
-void MainWindow::loadExampleData() {
-    auto inbox = new DirectoryItem("inbox");
-    for (int i = 0; i < 8; ++i)
-        inbox->addMail(loadExampleMail());
-    model->appendRow(inbox);
-
-    auto spam = new DirectoryItem("spam");
-    for (int i = 0; i < 8; ++i)
-        spam->addMail(loadExampleMail());
-    model->appendRow(spam);
-}
-
-std::shared_ptr<Mail> MainWindow::loadExampleMail() {
-    auto mail = std::make_shared<Mail>();
-
-    mail->setSender("sender" + QString::number(mailCounter));
-    mail->setTopic("topic" + QString::number(mailCounter));
-    QDate date(1995, 5, 17);
-    QDateTime dt(date);
-    mail->setSendTime(dt);
-
-    return mail;
+    std::cout << "index: " << i << std::endl;
 }
 

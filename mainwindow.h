@@ -2,9 +2,11 @@
 #define MAINWINDOW_H
 
 #include "mail.h"
+#include "mailbox.h"
 
 #include <QMainWindow>
 #include <QStandardItemModel>
+#include <QModelIndex>
 
 #include <memory>
 
@@ -20,14 +22,12 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+public slots:
+    void loadDirectory(const QModelIndex &index);
+
 private:
-    static int mailCounter;
-
-    void loadExampleData();
-    std::shared_ptr<Mail> loadExampleMail();
-
-    Ui::MainWindow *ui;
-    QStandardItemModel *model;
+    std::unique_ptr<Ui::MainWindow> ui;
+    std::unique_ptr<MailBox> mailBox;
 };
 
 #endif // MAINWINDOW_H

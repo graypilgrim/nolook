@@ -4,6 +4,7 @@
 #include <mail.h>
 
 #include <QStandardItem>
+#include <QStandardItemModel>
 #include <QList>
 
 #include <memory>
@@ -14,9 +15,16 @@ public:
     DirectoryItem(const QString & text);
     void addMail(const std::shared_ptr<Mail> &mail);
     void removeMail(const std::shared_ptr<Mail> &mail);
+    std::shared_ptr<QStandardItemModel> getModel();
 
 private:
-    QList<std::pair<std::shared_ptr<Mail>, QList<QStandardItem*>>> mails;
+    static int mailCounter;
+
+    void loadExampleData();
+    std::shared_ptr<Mail> loadExampleMail();
+
+    QList<std::shared_ptr<Mail>> mails;
+    std::shared_ptr<QStandardItemModel> model;
 };
 
 #endif // MAILITEM_H
