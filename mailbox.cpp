@@ -12,6 +12,12 @@ std::shared_ptr<QStandardItemModel> MailBox::getModel() {
     return model;
 }
 
+void MailBox::addMail(const std::shared_ptr<Mail> &mail, Directory directory) {
+    auto dirIndex = static_cast<int>(directory);
+    auto dir = static_cast<DirectoryItem*>(model->item(dirIndex));
+    dir->addMail(mail);
+}
+
 void MailBox::moveMail(const QModelIndex &sourceIndex, Directory sourceDir, Directory destDir) {
     auto srcIndex = static_cast<int>(sourceDir);
     auto sDir = static_cast<DirectoryItem*>(model->item(srcIndex));

@@ -142,7 +142,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="respondMailButton">
+             <widget class="QPushButton" name="respondButton">
               <property name="minimumSize">
                <size>
                 <width>70</width>
@@ -179,6 +179,22 @@
               </property>
               <property name="popupMode">
                <enum>QToolButton::InstantPopup</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="sendButton">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>70</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Send</string>
               </property>
              </widget>
             </item>

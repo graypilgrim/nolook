@@ -6,12 +6,14 @@
 
 #include <iostream>
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent), currentDirectory(Directory::inbox)
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+{}
+
+MainWindow::MainWindow(QWidget *parent, const std::shared_ptr<MailBox> &mailBox)
+    : QMainWindow(parent), mailBox(mailBox), currentDirectory(Directory::inbox)
 {
     ui.reset(new Ui::MainWindow);
-    mailBox.reset(new MailBox);
-    mailBox->loadExampleData();
 
     ui->setupUi(this);
 
@@ -35,7 +37,16 @@ void MainWindow::loadDirectory(const QModelIndex &index) {
     ui->directoryContent->setModel(dir->getModel().get());
     currentDirectory = static_cast<Directory>(i);
 
-    std::cout << "index: " << i << std::endl;
+    if ( currentDirectory != Directory::drafts)
+        ui->sendButton->setEnabled(false);
+    else
+        ui->sendButton->setEnabled(true);
+
+    if ( currentDirectory == Directory::sent || currentDirectory == Directory::drafts)
+        ui->moveButton->setEnabled(false);
+    else
+        ui->moveButton->setEnabled(true);
+
 }
 
 void MainWindow::loadMailContent(const QModelIndex &index) {
@@ -46,7 +57,7 @@ void MainWindow::loadMailContent(const QModelIndex &index) {
     ui->mailContent->insertPlainText(prepareMailContent(mail.get()));
 }
 
-void MainWindow::removeMail(bool checked) {
+void MainWindow::removeMail() {
     auto selected = ui->directoryContent->selectionModel()->selectedIndexes();
 
     if (selected.size() != 3)
@@ -63,7 +74,7 @@ void MainWindow::removeMail(bool checked) {
     ui->mailContent->clear();
 }
 
-void MainWindow::moveMail(bool checked) {
+void MainWindow::moveMail() {
     auto selected = ui->directoryContent->selectionModel()->selectedIndexes();
 
     if (selected.size() != 3)
@@ -72,13 +83,38 @@ void MainWindow::moveMail(bool checked) {
     auto act = static_cast<QAction*>(QObject::sender());
     auto dirIndex = static_cast<Directory>(act->data().toInt());
     mailBox->moveMail(selected[0], currentDirectory, dirIndex);
+}
 
+void MainWindow::newMail() {
+    newMailWindow.reset(new NewMailWindow(this, mailBox));
+
+    newMailWindow->show();
+}
+
+void MainWindow::newRespond() {
+    auto selected = ui->directoryContent->selectionModel()->selectedIndexes();
+
+    if (selected.size() != 3)
+        return;
+
+    int dirIndex = static_cast<int>(currentDirectory);
+    auto dir = static_cast<DirectoryItem*>(mailBox->getModel()->item(dirIndex));
+    auto baseMail = dir->getMail(selected[0].row());
+
+    auto newMail = std::make_shared<Mail>();
+    newMail->setRecipient(baseMail->getSender());
+
+    newMailWindow.reset(new NewMailWindow(this, mailBox));
+    newMailWindow->setMail(newMail);
+    newMailWindow->show();
 }
 
 void MainWindow::bindSignals() {
     QObject::connect(ui->mailDirectory, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(loadDirectory(const QModelIndex&)));
     QObject::connect(ui->directoryContent, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(loadMailContent(const QModelIndex&)));
-    QObject::connect(ui->deleteMailButton, SIGNAL(clicked(bool)), this, SLOT(removeMail(bool)));
+    QObject::connect(ui->deleteMailButton, SIGNAL(clicked()), this, SLOT(removeMail()));
+    QObject::connect(ui->newMailButton, SIGNAL(clicked()), this, SLOT(newMail()));
+    QObject::connect(ui->respondButton, SIGNAL(clicked()), this, SLOT(newRespond()));
 }
 
 void MainWindow::createMenus() {
@@ -89,19 +125,19 @@ void MainWindow::createActions() {
     auto inboxAct = new QAction(mailBox->getDirectoryName(Directory::inbox), this);
     auto data = QVariant(static_cast<int>(Directory::inbox));
     inboxAct->setData(data);
-    QObject::connect(inboxAct, SIGNAL(triggered(bool)), this, SLOT(moveMail(bool)));
+    QObject::connect(inboxAct, SIGNAL(triggered()), this, SLOT(moveMail()));
     moveMenu->addAction(inboxAct);
 
     auto archAct = new QAction(mailBox->getDirectoryName(Directory::archived), this);
     data = QVariant(static_cast<int>(Directory::archived));
     archAct->setData(data);
-    QObject::connect(archAct, SIGNAL(triggered(bool)), this, SLOT(moveMail(bool)));
+    QObject::connect(archAct, SIGNAL(triggered()), this, SLOT(moveMail()));
     moveMenu->addAction(archAct);
 
     auto spamAct = new QAction(mailBox->getDirectoryName(Directory::spam), this);
     data = QVariant(static_cast<int>(Directory::spam));
     spamAct->setData(data);
-    QObject::connect(spamAct, SIGNAL(triggered(bool)), this, SLOT(moveMail(bool)));
+    QObject::connect(spamAct, SIGNAL(triggered()), this, SLOT(moveMail()));
     moveMenu->addAction(spamAct);
 }
 

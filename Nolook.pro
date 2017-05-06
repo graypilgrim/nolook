@@ -27,11 +27,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     mail.cpp \
     directoryitem.cpp \
-    mailbox.cpp
+    mailbox.cpp \
+    newmailwindow.cpp
 
 HEADERS  += mainwindow.h \
     mail.h \
     directoryitem.h \
-    mailbox.h
+    mailbox.h \
+    newmailwindow.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    newmailwindow.ui
