@@ -177,6 +177,9 @@
               <property name="text">
                <string>Move</string>
               </property>
+              <property name="popupMode">
+               <enum>QToolButton::InstantPopup</enum>
+              </property>
              </widget>
             </item>
             <item>

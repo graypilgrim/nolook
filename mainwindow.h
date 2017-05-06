@@ -27,18 +27,20 @@ public slots:
     void loadDirectory(const QModelIndex &index);
     void loadMailContent(const QModelIndex &index);
     void removeMail(bool checked = false);
+    void moveMail(bool checked = false);
 
 private:
     void bindSignals();
-    void createActions();
     void createMenus();
+    void createActions();
     QString prepareMailContent(Mail *mail);
 
     std::unique_ptr<Ui::MainWindow> ui;
     std::unique_ptr<MailBox> mailBox;
     std::shared_ptr<QMenu> moveMenu;
 
-    DirectoryName currentDirectory;
+    Directory currentDirectory;
+
 };
 
 #endif // MAINWINDOW_H

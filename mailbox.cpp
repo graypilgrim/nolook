@@ -12,7 +12,7 @@ std::shared_ptr<QStandardItemModel> MailBox::getModel() {
     return model;
 }
 
-void MailBox::moveMail(const QModelIndex &sourceIndex, DirectoryName sourceDir, DirectoryName destDir) {
+void MailBox::moveMail(const QModelIndex &sourceIndex, Directory sourceDir, Directory destDir) {
     auto srcIndex = static_cast<int>(sourceDir);
     auto sDir = static_cast<DirectoryItem*>(model->item(srcIndex));
 
@@ -23,6 +23,25 @@ void MailBox::moveMail(const QModelIndex &sourceIndex, DirectoryName sourceDir, 
     dDir->addMail(mail);
     sDir->removeMail(sourceIndex);
 }
+
+QString MailBox::getDirectoryName(Directory dir) {
+    switch (dir) {
+    case Directory::inbox:
+        return "Inbox";
+    case Directory::archived:
+        return "Archived";
+    case Directory::sent:
+        return "Sent";
+    case Directory::spam:
+        return "Spam";
+    case Directory::removed:
+        return "Removed";
+
+    default:
+        return "";
+    }
+}
+
 
 void MailBox::loadExampleData() {
     auto inbox = new DirectoryItem("inbox");

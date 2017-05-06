@@ -7,7 +7,7 @@
 
 #include <memory>
 
-enum class DirectoryName {
+enum class Directory {
     inbox,
     archived,
     sent,
@@ -21,7 +21,8 @@ class MailBox
 public:
     MailBox();
     std::shared_ptr<QStandardItemModel> getModel();
-    void moveMail(const QModelIndex &sourceIndex, DirectoryName sourceDir, DirectoryName destDir);
+    void moveMail(const QModelIndex &sourceIndex, Directory sourceDir, Directory destDir);
+    QString getDirectoryName(Directory dir);
     void loadExampleData();
 
 private:
