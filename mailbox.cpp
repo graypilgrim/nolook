@@ -50,32 +50,40 @@ QString MailBox::getDirectoryName(Directory dir) {
 
 
 void MailBox::loadExampleData() {
+    QStringList labels = {"topic", "sender", "date"};
+
     auto inbox = new DirectoryItem("inbox");
+    inbox->getModel()->setHorizontalHeaderLabels(labels);
     for (int i = 0; i < 8; ++i)
         inbox->addMail(loadExampleMail());
     model->appendRow(inbox);
 
     auto archived = new DirectoryItem("archived");
+    archived->getModel()->setHorizontalHeaderLabels(labels);
     for (int i = 0; i < 8; ++i)
         archived->addMail(loadExampleMail());
     model->appendRow(archived);
 
     auto sent = new DirectoryItem("sent");
+    sent->getModel()->setHorizontalHeaderLabels(labels);
     for (int i = 0; i < 8; ++i)
         sent->addMail(loadExampleMail());
     model->appendRow(sent);
 
     auto drafts = new DirectoryItem("drafts");
+    drafts->getModel()->setHorizontalHeaderLabels(labels);
     for (int i = 0; i < 8; ++i)
         drafts->addMail(loadExampleMail());
     model->appendRow(drafts);
 
     auto spam = new DirectoryItem("spam");
+    spam->getModel()->setHorizontalHeaderLabels(labels);
     for (int i = 0; i < 8; ++i)
         spam->addMail(loadExampleMail());
     model->appendRow(spam);
 
     auto removed = new DirectoryItem("removed");
+    removed->getModel()->setHorizontalHeaderLabels(labels);
     for (int i = 0; i < 8; ++i)
         removed->addMail(loadExampleMail());
     model->appendRow(removed);

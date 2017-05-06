@@ -19,12 +19,11 @@ MainWindow::MainWindow(QWidget *parent, const std::shared_ptr<MailBox> &mailBox)
 
     ui->mailDirectory->setModel(mailBox->getModel().get());
     auto dir = static_cast<DirectoryItem*>(mailBox->getModel()->item(0));
-    ui->directoryContent->setModel(dir->getModel().get());
+    ui->directoryContent->setModel(dir->getModel().get());  
 
     bindSignals();
     createMenus();
     createActions();
-    ui->moveButton->setMenu(moveMenu.get());
 }
 
 MainWindow::~MainWindow()
@@ -136,6 +135,7 @@ void MainWindow::bindSignals() {
 
 void MainWindow::createMenus() {
     moveMenu = std::make_shared<QMenu>();
+    ui->moveButton->setMenu(moveMenu.get());
 }
 
 void MainWindow::createActions() {
