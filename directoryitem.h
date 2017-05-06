@@ -12,9 +12,10 @@
 class DirectoryItem : public QStandardItem
 {
 public:
-    DirectoryItem(const QString & text);
+    DirectoryItem(const QString &text);
     void addMail(const std::shared_ptr<Mail> &mail);
     void removeMail(const std::shared_ptr<Mail> &mail);
+    void removeMail(const QModelIndex &index);
     std::shared_ptr<QStandardItemModel> getModel();
     std::shared_ptr<Mail> getMail(int index);
 

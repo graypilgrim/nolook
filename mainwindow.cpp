@@ -41,9 +41,26 @@ void MainWindow::loadMailContent(const QModelIndex &index) {
     ui->mailContent->insertPlainText(prepareMailContent(mail.get()));
 }
 
+void MainWindow::removeMail(bool checked) {
+    auto selected = ui->directoryContent->selectionModel()->selectedIndexes();
+
+    if (selected.size() != 3)
+        return;
+
+    if (currentDirectory != DirectoryName::removed) {
+        mailBox->moveMail(selected[0], currentDirectory, DirectoryName::removed);
+        return;
+    }
+
+    int dirIndex = static_cast<int>(currentDirectory);
+    auto dir = static_cast<DirectoryItem*>(mailBox->getModel()->item(dirIndex));
+    dir->removeMail(selected[0]);
+}
+
 void MainWindow::bindSignals() {
     QObject::connect(ui->mailDirectory, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(loadDirectory(const QModelIndex&)));
     QObject::connect(ui->directoryContent, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(loadMailContent(const QModelIndex&)));
+    QObject::connect(ui->deleteMailButton, SIGNAL(clicked(bool)), this, SLOT(removeMail(bool)));
 }
 
 void MainWindow::createMenus() {

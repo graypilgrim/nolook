@@ -12,6 +12,18 @@ std::shared_ptr<QStandardItemModel> MailBox::getModel() {
     return model;
 }
 
+void MailBox::moveMail(const QModelIndex &sourceIndex, DirectoryName sourceDir, DirectoryName destDir) {
+    auto srcIndex = static_cast<int>(sourceDir);
+    auto sDir = static_cast<DirectoryItem*>(model->item(srcIndex));
+
+    auto dstIndex = static_cast<int>(destDir);
+    auto dDir = static_cast<DirectoryItem*>(model->item(dstIndex));
+
+    auto mail = sDir->getMail(sourceIndex.row());
+    dDir->addMail(mail);
+    sDir->removeMail(sourceIndex);
+}
+
 void MailBox::loadExampleData() {
     auto inbox = new DirectoryItem("inbox");
     for (int i = 0; i < 8; ++i)
@@ -42,6 +54,7 @@ void MailBox::loadExampleData() {
     for (int i = 0; i < 8; ++i)
         removed->addMail(loadExampleMail());
     model->appendRow(removed);
+
 }
 
 std::shared_ptr<Mail> MailBox::loadExampleMail() {
@@ -49,7 +62,7 @@ std::shared_ptr<Mail> MailBox::loadExampleMail() {
 
     mail->setSender("sender" + QString::number(mailCounter));
     mail->setTopic("topic" + QString::number(mailCounter));
-    QDate date(1995, 5, 17);
+    QDate date(1984 + mailCounter, 5, 17);
     QDateTime dt(date);
     mail->setSendTime(dt);
     ++mailCounter;

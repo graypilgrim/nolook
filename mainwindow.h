@@ -26,6 +26,7 @@ public:
 public slots:
     void loadDirectory(const QModelIndex &index);
     void loadMailContent(const QModelIndex &index);
+    void removeMail(bool checked = false);
 
 private:
     void bindSignals();

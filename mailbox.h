@@ -21,6 +21,7 @@ class MailBox
 public:
     MailBox();
     std::shared_ptr<QStandardItemModel> getModel();
+    void moveMail(const QModelIndex &sourceIndex, DirectoryName sourceDir, DirectoryName destDir);
     void loadExampleData();
 
 private:
