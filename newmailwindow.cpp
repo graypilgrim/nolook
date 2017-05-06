@@ -31,11 +31,17 @@ void NewMailWindow::setMail(const std::weak_ptr<Mail> &mail) {
 void NewMailWindow::sendMail() {
     auto mail = createMail();
     mailBox->addMail(mail, Directory::sent);
+    hide();
 }
 
 void NewMailWindow::saveAsDraft() {
     auto mail = createMail();
     mailBox->addMail(mail, Directory::drafts);
+    hide();
+}
+
+void NewMailWindow::cancel() {
+    hide();
 }
 
 std::shared_ptr<Mail> NewMailWindow::createMail() {
@@ -52,4 +58,5 @@ std::shared_ptr<Mail> NewMailWindow::createMail() {
 void NewMailWindow::bindSignals() {
     QObject::connect(ui->sendButton, SIGNAL(clicked()), this, SLOT(sendMail()));
     QObject::connect(ui->saveButton, SIGNAL(clicked()), this, SLOT(saveAsDraft()));
+    QObject::connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(cancel()));
 }

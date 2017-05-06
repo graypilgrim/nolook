@@ -109,12 +109,29 @@ void MainWindow::newRespond() {
     newMailWindow->show();
 }
 
+void MainWindow::sendDraft() {
+    auto selected = ui->directoryContent->selectionModel()->selectedIndexes();
+
+    if (selected.size() != 3)
+        return;
+
+    int dirIndex = static_cast<int>(currentDirectory);
+    auto dir = static_cast<DirectoryItem*>(mailBox->getModel()->item(dirIndex));
+    auto baseMail = dir->getMail(selected[0].row());
+    dir->removeMail(selected[0]);
+
+    newMailWindow.reset(new NewMailWindow(this, mailBox));
+    newMailWindow->setMail(baseMail);
+    newMailWindow->show();
+}
+
 void MainWindow::bindSignals() {
     QObject::connect(ui->mailDirectory, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(loadDirectory(const QModelIndex&)));
     QObject::connect(ui->directoryContent, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(loadMailContent(const QModelIndex&)));
     QObject::connect(ui->deleteMailButton, SIGNAL(clicked()), this, SLOT(removeMail()));
     QObject::connect(ui->newMailButton, SIGNAL(clicked()), this, SLOT(newMail()));
     QObject::connect(ui->respondButton, SIGNAL(clicked()), this, SLOT(newRespond()));
+    QObject::connect(ui->sendButton, SIGNAL(clicked()), this, SLOT(sendDraft()));
 }
 
 void MainWindow::createMenus() {

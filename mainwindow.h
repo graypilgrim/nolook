@@ -32,6 +32,7 @@ public slots:
     void moveMail();
     void newMail();
     void newRespond();
+    void sendDraft();
 
 private:
     void bindSignals();

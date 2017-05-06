@@ -25,6 +25,7 @@ public:
 public slots:
     void sendMail();
     void saveAsDraft();
+    void cancel();
 
 private:
     std::shared_ptr<Mail> createMail();
