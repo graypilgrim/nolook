@@ -10,8 +10,8 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {}
 
-MainWindow::MainWindow(QWidget *parent, const std::shared_ptr<MailBox> &mailBox)
-    : QMainWindow(parent), mailBox(mailBox), currentDirectory(Directory::inbox)
+MainWindow::MainWindow(QWidget *parent, const std::shared_ptr<MailBox> &mailBox, const std::shared_ptr<Configuration> &configuration)
+    : QMainWindow(parent), mailBox(mailBox), configuration(configuration), currentDirectory(Directory::inbox)
 {
     ui.reset(new Ui::MainWindow);
 
@@ -41,10 +41,13 @@ void MainWindow::loadDirectory(const QModelIndex &index) {
     else
         ui->sendButton->setEnabled(true);
 
-    if ( currentDirectory == Directory::sent || currentDirectory == Directory::drafts)
+    if ( currentDirectory == Directory::sent || currentDirectory == Directory::drafts) {
         ui->moveButton->setEnabled(false);
-    else
+        ui->respondButton->setEnabled(false);
+    } else {
         ui->moveButton->setEnabled(true);
+        ui->respondButton->setEnabled(true);
+    }
 
 }
 
@@ -124,6 +127,11 @@ void MainWindow::sendDraft() {
     newMailWindow->show();
 }
 
+void MainWindow::settings() {
+    settingsDialog.reset(new SettingsDialog(this, configuration));
+    settingsDialog->show();
+}
+
 void MainWindow::bindSignals() {
     QObject::connect(ui->mailDirectory, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(loadDirectory(const QModelIndex&)));
     QObject::connect(ui->directoryContent, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(loadMailContent(const QModelIndex&)));
@@ -131,6 +139,7 @@ void MainWindow::bindSignals() {
     QObject::connect(ui->newMailButton, SIGNAL(clicked()), this, SLOT(newMail()));
     QObject::connect(ui->respondButton, SIGNAL(clicked()), this, SLOT(newRespond()));
     QObject::connect(ui->sendButton, SIGNAL(clicked()), this, SLOT(sendDraft()));
+    QObject::connect(ui->settingsButton, SIGNAL(clicked()), this, SLOT(settings()));
 }
 
 void MainWindow::createMenus() {

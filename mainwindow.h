@@ -4,6 +4,7 @@
 #include "mail.h"
 #include "mailbox.h"
 #include "newmailwindow.h"
+#include "settingsdialog.h"
 
 #include <QMainWindow>
 #include <QStandardItemModel>
@@ -22,7 +23,7 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
-    MainWindow(QWidget *parent, const std::shared_ptr<MailBox> &mailBox);
+    MainWindow(QWidget *parent, const std::shared_ptr<MailBox> &mailBox, const std::shared_ptr<Configuration> &configuration);
     ~MainWindow();
 
 public slots:
@@ -33,6 +34,7 @@ public slots:
     void newMail();
     void newRespond();
     void sendDraft();
+    void settings();
 
 private:
     void bindSignals();
@@ -41,9 +43,13 @@ private:
     QString prepareMailContent(Mail *mail);
 
     std::unique_ptr<Ui::MainWindow> ui;
+
     std::shared_ptr<MailBox> mailBox;
+    std::shared_ptr<Configuration> configuration;
+
     std::shared_ptr<QMenu> moveMenu;
     std::unique_ptr<NewMailWindow> newMailWindow;
+    std::unique_ptr<SettingsDialog> settingsDialog;
 
     Directory currentDirectory;
 
