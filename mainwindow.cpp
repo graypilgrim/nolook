@@ -14,12 +14,11 @@ MainWindow::MainWindow(QWidget *parent, const std::shared_ptr<MailBox> &mailBox,
     : QMainWindow(parent), mailBox(mailBox), configuration(configuration), currentDirectory(Directory::inbox)
 {
     ui.reset(new Ui::MainWindow);
-
     ui->setupUi(this);
 
     ui->mailDirectory->setModel(mailBox->getModel().get());
     auto dir = static_cast<DirectoryItem*>(mailBox->getModel()->item(0));
-    ui->directoryContent->setModel(dir->getModel().get());  
+    ui->directoryContent->setModel(dir->getModel().get());
 
     bindSignals();
     createMenus();
@@ -36,19 +35,7 @@ void MainWindow::loadDirectory(const QModelIndex &index) {
     ui->directoryContent->setModel(dir->getModel().get());
     currentDirectory = static_cast<Directory>(i);
 
-    if ( currentDirectory != Directory::drafts)
-        ui->sendButton->setEnabled(false);
-    else
-        ui->sendButton->setEnabled(true);
-
-    if ( currentDirectory == Directory::sent || currentDirectory == Directory::drafts) {
-        ui->moveButton->setEnabled(false);
-        ui->respondButton->setEnabled(false);
-    } else {
-        ui->moveButton->setEnabled(true);
-        ui->respondButton->setEnabled(true);
-    }
-
+    setButtonsAvailability();
 }
 
 void MainWindow::loadMailContent(const QModelIndex &index) {
@@ -170,5 +157,52 @@ void MainWindow::createActions() {
 QString MainWindow::prepareMailContent(Mail *mail) {
     auto result = mail->getSender() + "\n" + mail->getTopic() + "\n" + mail->getSendTime().toString("dd-MM-yy");
     return result;
+}
+
+void MainWindow::setButtonsAvailability()
+{
+    if ( currentDirectory != Directory::drafts)
+        ui->sendButton->setEnabled(false);
+    else
+        ui->sendButton->setEnabled(true);
+
+    if ( currentDirectory == Directory::sent || currentDirectory == Directory::drafts) {
+        ui->moveButton->setEnabled(false);
+        ui->respondButton->setEnabled(false);
+    } else {
+        ui->moveButton->setEnabled(true);
+        ui->respondButton->setEnabled(true);
+    }
+
+    switch (currentDirectory) {
+    case Directory::inbox:
+    case Directory::archived:
+        ui->respondButton->setEnabled(true);
+        ui->moveButton->setEnabled(true);
+        ui->sendButton->setEnabled(false);
+        break;
+
+    case Directory::spam:
+    case Directory::removed:
+        ui->respondButton->setEnabled(false);
+        ui->moveButton->setEnabled(true);
+        ui->sendButton->setEnabled(false);
+        break;
+
+    case Directory::sent:
+        ui->respondButton->setEnabled(false);
+        ui->moveButton->setEnabled(false);
+        ui->sendButton->setEnabled(false);
+        break;
+
+    case Directory::drafts:
+        ui->respondButton->setEnabled(false);
+        ui->moveButton->setEnabled(false);
+        ui->sendButton->setEnabled(true);
+        break;
+
+    default:
+        break;
+    }
 }
 

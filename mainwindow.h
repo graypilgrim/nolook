@@ -41,6 +41,7 @@ private:
     void createMenus();
     void createActions();
     QString prepareMailContent(Mail *mail);
+    void setButtonsAvailability();
 
     std::unique_ptr<Ui::MainWindow> ui;
 

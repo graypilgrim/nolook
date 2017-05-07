@@ -20,11 +20,6 @@ public:
     std::shared_ptr<Mail> getMail(int index);
 
 private:
-    static int mailCounter;
-
-    void loadExampleData();
-    std::shared_ptr<Mail> loadExampleMail();
-
     QList<std::shared_ptr<Mail>> mails;
     std::shared_ptr<QStandardItemModel> model;
 };
