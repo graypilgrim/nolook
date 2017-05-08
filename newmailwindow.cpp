@@ -30,6 +30,8 @@ void NewMailWindow::setMail(const std::weak_ptr<Mail> &mail) {
 
 void NewMailWindow::sendMail() {
     auto mail = createMail();
+    if (mail == nullptr)
+        return;
     mailBox->addMail(mail, Directory::sent);
     hide();
 }
@@ -45,6 +47,9 @@ void NewMailWindow::cancel() {
 }
 
 std::shared_ptr<Mail> NewMailWindow::createMail() {
+    if (ui->fromTextEdit->toPlainText().isEmpty() || ui->toTextEdit->toPlainText().isEmpty() || ui->topicTextEdit->toPlainText().isEmpty())
+        return nullptr;
+
     auto mail = std::make_shared<Mail>();
     mail->setSender(ui->fromTextEdit->toPlainText());
     mail->setRecipient(ui->toTextEdit->toPlainText());
