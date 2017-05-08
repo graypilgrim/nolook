@@ -118,7 +118,7 @@ void MainWindow::sendDraft() {
 
 void MainWindow::settings() {
     settingsDialog.reset(new SettingsDialog(this, configuration));
-    settingsDialog->show();
+    settingsDialog->exec();
 }
 
 void MainWindow::bindSignals() {
