@@ -3,6 +3,7 @@
 #include "directoryitem.h"
 
 #include <QAction>
+#include <QIcon>
 
 #include <iostream>
 
@@ -52,6 +53,8 @@ void MainWindow::removeMail() {
     if (selected.size() != 3)
         return;
 
+    ui->mailContent->clear();
+
     if (currentDirectory != Directory::removed) {
         mailBox->moveMail(selected[0], currentDirectory, Directory::removed);
         return;
@@ -60,7 +63,6 @@ void MainWindow::removeMail() {
     int dirIndex = static_cast<int>(currentDirectory);
     auto dir = static_cast<DirectoryItem*>(mailBox->getModel()->item(dirIndex));
     dir->removeMail(selected[0]);
-    ui->mailContent->clear();
 }
 
 void MainWindow::moveMail() {
@@ -155,7 +157,10 @@ void MainWindow::createActions() {
 }
 
 QString MainWindow::prepareMailContent(Mail *mail) {
-    auto result = mail->getSender() + "\n" + mail->getTopic() + "\n" + mail->getSendTime().toString("dd-MM-yy");
+    auto result = "from: " + mail->getSender() + "\n";
+    result += "topic:" + mail->getTopic() + "\n";
+    result += "sent time:" + mail->getSendTime().toString("dd-MM-yy") + "\n";
+    result += mail->getContent();
     return result;
 }
 

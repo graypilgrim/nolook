@@ -43,3 +43,14 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui \
     newmailwindow.ui \
     settingsdialog.ui
+
+DISTFILES += \
+    res/settings.png \
+    res/new-file.png \
+    res/edit.png \
+    res/delete.png \
+    res/send-button.png \
+    res/move-option.png
+
+RESOURCES += \
+    resources.qrc

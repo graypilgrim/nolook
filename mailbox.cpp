@@ -50,7 +50,7 @@ QString MailBox::getDirectoryName(Directory dir) {
 
 
 void MailBox::loadExampleData() {
-    QStringList labels = {"topic", "sender", "date"};
+    QStringList labels = {"topic", "sender", "time"};
 
     auto inbox = new DirectoryItem("inbox");
     inbox->getModel()->setHorizontalHeaderLabels(labels);
@@ -95,6 +95,7 @@ std::shared_ptr<Mail> MailBox::loadExampleMail() {
 
     mail->setSender("sender" + QString::number(mailCounter));
     mail->setTopic("topic" + QString::number(mailCounter));
+    mail->setContent("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus eleifend ornare eros vel blandit. Morbi aliquam varius tortor eget aliquam. Aliquam sed feugiat arcu, eget condimentum tortor. Mauris maximus orci mi, id interdum nibh blandit in. Maecenas vulputate mi lorem, sit amet vestibulum risus elementum vel. Nullam sodales sapien sed eleifend posuere. Morbi ultricies nulla tortor. Aliquam laoreet faucibus porttitor. Aliquam egestas eros neque. Mauris varius lectus eu elit cursus dapibus. Sed dapibus leo quis sodales suscipit. In tincidunt lorem mollis, sodales est vitae, finibus quam. Donec lacinia orci id ligula blandit luctus.");
     QDate date(1984 + mailCounter, 5, 17);
     QDateTime dt(date);
     mail->setSendTime(dt);

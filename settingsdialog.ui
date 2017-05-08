@@ -216,7 +216,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>outgoing server settings</string>
+    <string>SMTP server settings</string>
    </property>
    <widget class="QLabel" name="outUsernameLabel">
     <property name="geometry">
